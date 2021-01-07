@@ -2,7 +2,10 @@
 
 **Cloud native charts**
 
-<https://louis030195.github.io/helm-charts>
+```bash
+helm repo add louis030195 https://louis030195.github.io/helm-charts
+helm repo update
+```
 
 ## Charts
 
