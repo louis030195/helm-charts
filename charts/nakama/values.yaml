@@ -1,0 +1,49 @@
+externalIPs:
+imagePullSecrets: []
+resources: {}
+  # Example
+  #    limits:
+  #      cpu: 3800m
+  #      memory: 8000Mi
+nodeSelector: {}
+monitoring:
+  logs:
+    # TODO: optional https://github.com/timberio/vector side car
+  metrics:
+    # https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+    prometheusOperator:
+      enabled: false
+      releaseName: prom # SHOULD BE THE PROM OPERATOR CLUSTER RELEASE CHART NAME
+    stackdriverProjectId: ""
+    prometheusPort: 9090
+
+console:
+  port: 7351
+  grpc: 7348
+  username: "admin"
+  password: "password"
+
+runtime:
+  httpKey: "defaultkey"
+
+socket:
+  port: 7350
+  serverKey: "defaultkey"
+  type: NodePort
+  nodePort: 30020
+
+grpc:
+  port: 7349
+
+session:
+  encryptionKey: "defaultencryptionkey"
+  tokenExpirySec: 6000
+
+image:
+  repository: ""
+  tag: ""
+  pullPolicy: IfNotPresent
+
+database:
+  port: 26257
+  size: 1000Mi

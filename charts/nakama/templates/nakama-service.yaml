@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "nakama.fullname" . }}
+  labels:
+    component: node
+    release: {{ .Values.monitoring.metrics.prometheusOperator.releaseName }}
+    {{- include "nakama.selectorLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.socket.type }}
+  ports:
+  - name: grpc
+    port: {{ .Values.grpc.port }}
+    targetPort: {{ .Values.grpc.port }}
+  - name: socket
+    port: {{ .Values.socket.port }}
+    targetPort: {{ .Values.socket.port }}
+    nodePort: {{ .Values.socket.nodePort }}
+  - name: console
+    port: {{ .Values.console.port }}
+    targetPort: {{ .Values.console.port }}
+  - name: console-grpc
+    port: {{ .Values.console.grpc }}
+    targetPort: {{ .Values.console.grpc }}
+  - name: prometheus
+    port: {{ .Values.monitoring.metrics.prometheusPort }}
+    targetPort: {{ .Values.monitoring.metrics.prometheusPort }}
+  selector:
+    component: node
+    {{- include "nakama.selectorLabels" . | nindent 4 }}
+  externalIPs:
+    {{- with .Values.externalIPs }}
+      {{- range . }}
+        - {{ . | quote }}
+      {{- end }}
+    {{- end }}

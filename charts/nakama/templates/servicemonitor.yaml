@@ -1,0 +1,17 @@
+{{ if .Values.monitoring.metrics.prometheusOperator.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "nakama.fullname" . }}
+  labels:
+    release: {{ .Values.monitoring.metrics.prometheusOperator.releaseName }}
+spec:
+  selector:
+    matchLabels:
+      release: {{ .Values.monitoring.metrics.prometheusOperator.releaseName }}
+  endpoints:
+    - port: prometheus
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+{{ end }}

@@ -1,0 +1,8 @@
+# See https://github.com/helm/chart-testing#configuration
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts
+chart-repos:
+  - louis030195=https://louis030195.github.io/helm-charts
+helm-extra-args: --timeout 600s --set image.repository=louis030195/niwrad-nakama

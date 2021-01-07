@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nakama.fullname" . }}-node
+  labels:
+    component: node
+    {{- include "nakama.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: node
+      {{- include "nakama.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        component: node
+        {{- include "nakama.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: wait-for-database
+          image: busybox
+          args:
+            - /bin/sh
+            - -c
+            - >
+              set -x;
+              while [ $(curl -sw '%{http_code}' "{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }}" -o /dev/null) -ne 200 ]; do
+                sleep 15;
+              done
+      containers:
+      - name: nakama
+        command:
+        - /bin/sh
+        - -ecx
+        - |
+          /nakama/nakama migrate up --database.address root@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }} &&
+           exec /nakama/nakama --database.address root@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }} --config /nk-config/nakama-config.yml
+        image: {{ required "You have to give your custom Nakama container image" .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+          - name: config-volume
+            mountPath: /nk-config/nakama-config.yml
+            subPath: nakama-config.yml
+        livenessProbe:
+          exec:
+            command:
+            - curl
+            - -f
+            - http://{{ include "nakama.fullname" . }}-node:{{ .Values.socket.port }}
+          failureThreshold: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+        ports:
+        - containerPort: {{ .Values.grpc.port }}
+        - containerPort: {{ .Values.socket.port }}
+        - containerPort: {{ .Values.console.port }}
+        - containerPort: {{ .Values.console.grpc }}
+        - containerPort: {{ .Values.monitoring.metrics.prometheusPort }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "nakama.fullname" . }}
+      restartPolicy: Always
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

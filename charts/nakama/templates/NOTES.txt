@@ -1,0 +1,8 @@
+* Export Nakama Pod name
+  $ export NK_POD=$(kubectl -n {{ .Release.Namespace }} get pod -l component=node | grep -v '^NAME' | awk '{print $1}' | head -n 1)
+* Get Nakama container logs
+  $ kubectl logs ${NK_POD} -n {{ .Release.Namespace }} -f
+* Watch all resource in the namespace
+  $ watch kubectl get all -n {{ .Release.Namespace }}
+* Access Nakama UI
+  $ kubectl port-forward ${NK_POD} -n nakama {{ .Values.console.port }}:{{ .Values.console.port }} -n {{ .Release.Namespace }}

@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nakama.fullname" . }}
+  labels:
+    {{- include "nakama.labels" . | nindent 4 }}
+data:
+  nakama-config.yml: |
+    name: {{ include "nakama.fullname" . }}
+    data_dir: "./data/"
+
+    #logger:
+    #  stdout: false
+    #  level: "warn"
+    #  file: "/tmp/path/to/logfile.log"
+
+    metrics:
+      reporting_freq_sec: 60
+      namespace: nakama
+      stackdriver_projectid: {{ .Values.monitoring.metrics.stackdriverProjectId }}
+      prometheus_port: {{ .Values.monitoring.metrics.prometheusPort }}
+
+    database:
+      address:
+          - "root@cockroachdb:{{ .Values.database.port }}"
+      conn_max_lifetime_ms: 0
+      max_open_conns: 0
+      max_idle_conns: 100
+
+    runtime:
+      path: "/nakama/data/modules"
+      http_key: {{ .Values.runtime.httpKey }}
+
+    socket:
+      server_key: {{ .Values.socket.serverKey }}
+      port: {{ .Values.socket.port }}
+      max_message_size_bytes: 4096 # bytes
+      read_timeout_ms: 10000
+      write_timeout_ms: 10000
+      idle_timeout_ms: 60000
+      write_wait_ms: 5000
+      pong_wait_ms: 10000
+      ping_period_ms: 8000 # Must be less than pong_wait_ms
+      outgoing_queue_size: 16
+
+    session:
+      encryption_key: {{ .Values.session.encryptionKey }}
+      token_expiry_sec: {{ .Values.session.tokenExpirySec }}
+
+    console:
+    {{- range $key, $value := .Values.console }}
+      {{ $key }}: {{ $value }}
+    {{- end }}
