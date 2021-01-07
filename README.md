@@ -1,5 +1,5 @@
 # helm-charts
 
-**Cloud native oriented charts**
+**Cloud native charts**
 
-- <https://github.com/heroiclabs/nakama> -> [chart](charts/nakama/README.md)
+- <https://github.com/heroiclabs/nakama> -> [chart](https://github.com/louis030195/helm-charts/tree/main/charts/nakama)
