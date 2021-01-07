@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  nakama:
+  - apiVersion: v2
+    created: "2021-01-07T17:53:52.455463934Z"
+    description: A Helm chart for Nakama
+    digest: 369f53560b712d41cd492467d571761bff6c72242d5d6340cdc75e1318b9a924
+    name: nakama
+    type: application
+    urls:
+    - https://github.com/louis030195/helm-charts/releases/download/nakama-0.0.2/nakama-0.0.2.tgz
+    version: 0.0.2
+generated: "2021-01-07T17:53:52.113542594Z"
