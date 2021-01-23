@@ -47,3 +47,7 @@ image:
 database:
   port: 26257
   size: 1000Mi
+
+# Want to use k8s api ?
+clusterRole:
+  enabled: false
