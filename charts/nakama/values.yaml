@@ -47,6 +47,11 @@ image:
 database:
   port: 26257
   size: 1000Mi
+  image:
+    # Only support cockroachdb for now
+    repository: cockroachdb/cockroach
+    tag: v20.2.4
+    pullPolicy: IfNotPresent
 
 # Want to use k8s api ?
 clusterRole:

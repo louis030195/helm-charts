@@ -21,12 +21,12 @@ spec:
     spec:
       containers:
       - args:
-        - start
+        - start-single-node
         - --insecure
         - --store=attrs=ssd,path=/var/lib/cockroach/
-        image: cockroachdb/cockroach:v19.2.5
-        imagePullPolicy: ""
-        name: cockroachdb
+        image: {{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}
+        imagePullPolicy: {{ .Values.database.image.pullPolicy }}
+        name: db
         ports:
         - containerPort: {{ .Values.database.port }}
         - containerPort: 8080

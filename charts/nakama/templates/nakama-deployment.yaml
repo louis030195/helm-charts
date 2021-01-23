@@ -35,7 +35,8 @@ spec:
               set -x;
               while [ $(curl -sw '%{http_code}' "{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }}" -o /dev/null) -ne 200 ]; do
                 sleep 15;
-              done
+              done;
+              sleep 15;
       containers:
       - name: nakama
         command:
@@ -55,7 +56,7 @@ spec:
             command:
             - curl
             - -f
-            - http://{{ include "nakama.fullname" . }}-node:{{ .Values.socket.port }}
+            - http://{{ include "nakama.fullname" . }}:{{ .Values.socket.port }}
           failureThreshold: 5
           periodSeconds: 10
           timeoutSeconds: 5

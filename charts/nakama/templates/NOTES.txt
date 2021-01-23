@@ -1,7 +1,8 @@
-* Export Nakama Pod name
-  $ export NK_POD=$(kubectl -n {{ .Release.Namespace }} get pod -l component=node | grep -v '^NAME' | awk '{print $1}' | head -n 1)
+{{- if eq .Values.runtime.httpKey "defaultkey" }}
+WARNING ! You left default httpKey "defaultkey", it's insecure ! Also check other keys !
+{{- end }}
 * Get Nakama container logs
-  $ kubectl logs ${NK_POD} -n {{ .Release.Namespace }} -f
+  $ kubectl logs -l component=node -n {{ .Release.Namespace }} -f
 * Watch all resource in the namespace
   $ watch kubectl get all -n {{ .Release.Namespace }}
 * Access Nakama UI
