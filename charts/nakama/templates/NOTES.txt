@@ -2,8 +2,8 @@
 WARNING ! You left default httpKey "defaultkey", it's insecure ! Also check other keys !
 {{- end }}
 * Get Nakama container logs
-  $ kubectl logs -l component=node -n {{ .Release.Namespace }} -f
+  $ kubectl logs -l component=node -f --tail=-1 -n {{ .Release.Namespace }}
 * Watch all resource in the namespace
   $ watch kubectl get all -n {{ .Release.Namespace }}
 * Access Nakama UI
-  $ kubectl port-forward ${NK_POD} -n nakama {{ .Values.console.port }}:{{ .Values.console.port }} -n {{ .Release.Namespace }}
+  $ kubectl port-forward -l component=node {{ .Values.console.port }}:{{ .Values.console.port }} -n {{ .Release.Namespace }}

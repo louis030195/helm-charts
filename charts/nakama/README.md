@@ -28,8 +28,8 @@ COPY --from=builder /backend/*.so /nakama/data/modules
 COPY --from=builder /backend/lua/*.lua /nakama/data/modules
 ```
 
-Your image is hosted on a repository (DockerHub, Github Registry ...), you might also use a local k3s/minikube that 
-pull from local repository, but you're on your own for that.
+Your image is hosted on a repository (DockerHub, Github Registry ...), [you might also use a local k3s/minikube that 
+pull from local repository](https://k3d.io/usage/guides/registries/#using-a-local-registry).
 
 ```bash
 helm repo add louis030195 https://louis030195.github.io/helm-charts

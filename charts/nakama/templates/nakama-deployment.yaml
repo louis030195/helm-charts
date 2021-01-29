@@ -51,6 +51,14 @@ spec:
           - name: config-volume
             mountPath: /nk-config/nakama-config.yml
             subPath: nakama-config.yml
+        readinessProbe:
+          exec:
+            command:
+              - curl
+              - -f
+              - http://{{ include "nakama.fullname" . }}:{{ .Values.socket.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 5
         livenessProbe:
           exec:
             command:
