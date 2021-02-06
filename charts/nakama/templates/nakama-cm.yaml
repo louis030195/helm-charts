@@ -41,7 +41,12 @@ data:
       write_wait_ms: 5000
       pong_wait_ms: 10000
       ping_period_ms: 8000 # Must be less than pong_wait_ms
-      outgoing_queue_size: 16
+      outgoing_queue_size: {{ .Values.socket.outgoingQueueSize }}
+
+    matchmaker:
+      interval_sec: {{ .Values.matchmaker.intervalSec }}
+      max_intervals: {{ .Values.matchmaker.maxIntervals }}
+      max_tickets: {{ .Values.matchmaker.maxTickets }}
 
     session:
       encryption_key: {{ .Values.session.encryptionKey }}

@@ -31,6 +31,12 @@ socket:
   serverKey: "defaultkey"
   type: NodePort
   nodePort: 30020
+  outgoingQueueSize: 16
+
+matchmaker:
+  intervalSec: 15
+  maxIntervals: 2
+  maxTickets: 3
 
 grpc:
   port: 7349
