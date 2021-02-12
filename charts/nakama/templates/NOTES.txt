@@ -7,3 +7,8 @@ WARNING ! You left default httpKey "defaultkey", it's insecure ! Also check othe
   $ watch kubectl get all -n {{ .Release.Namespace }}
 * Access Nakama UI
   $ kubectl port-forward $(kubectl get pod -l component=node -n {{ .Release.Namespace }} -o=jsonpath='{.items[0].metadata.name}') {{ .Values.console.port }}:{{ .Values.console.port }} -n {{ .Release.Namespace }}
+{{- if .Values.monitoring.metrics.prometheusOperator.enabled }}
+* Access the node metrics through Grafana on localhost:8080, with, for example a PrometheusOperator deployed in "observability" namespace
+  Grafana credential is admin:prom-operator by default on PrometheusOperator
+  $ kubectl port-forward svc/{{ .Values.monitoring.metrics.prometheusOperator.releaseName }}-grafana 8080:80 -n observability
+{{- end }}

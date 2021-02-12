@@ -46,8 +46,20 @@ helm install nk louis030195/nakama -f my-values.yaml -n mynamespace
 ## Additional Features
 
 - Metrics scrapping using [Kubernetes Prometheus Operator](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
-  * i.e. `helm install nk nakama --set image.repository=myrepository,monitoring.metrics.prometheusOperator.enabled=true -n mynamespace`
-  * Then head to your Grafana and you have monitoring :)
+  * Install Prometheus Operator for example on "observability" namespace. 
+	
+	**Be aware that Prometheus Operator requires special rights on the cluster to find resources** 
+  * Install Nakama with prometheusOperator enabled (it deploys a custom CRD used by Prom to find the resources)
+	
+	`helm install nk nakama --set image.repository=myrepository,monitoring.metrics.prometheusOperator.enabled=true -n mynamespace`
+  * Then follow the instructions in Helm notes to reach your Nakama metrics on Grafana, you then can build any dashboards:
+	![NakamaMetrics](docs/nakamaAndPromOperator.png)
+	
+  * Since Grafana support alerting, you could send alerts when there is presence spikes to your team Discord !
+	![DiscordAlerting](docs/discordAlerting.png)
+	
+  * Then tell Grafana to send alerts to this channel
+	![img.png](img.png)
 
 ## TODO
 
@@ -57,4 +69,4 @@ helm install nk louis030195/nakama -f my-values.yaml -n mynamespace
 - [ ] postgresql support
 - [ ] Nakama enterprise support 
 - [ ] Cockroachdb / postgresql dependency
-- [ ] Resources
+- [ ] Provide a JSON Grafana dashboards for Nakama
