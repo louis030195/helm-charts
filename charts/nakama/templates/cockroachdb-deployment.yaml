@@ -39,3 +39,10 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: {{ include "nakama.fullname" . }}
+      {{- with .Values.nodeName }}
+      nodeName: {{ . }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

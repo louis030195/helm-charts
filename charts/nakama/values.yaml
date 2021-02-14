@@ -6,6 +6,8 @@ resources: {}
   #      cpu: 3800m
   #      memory: 8000Mi
 nodeSelector: {}
+affinity: {}
+nodeName:
 monitoring:
   logs:
     # TODO: optional https://github.com/timberio/vector side car
