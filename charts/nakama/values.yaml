@@ -19,6 +19,14 @@ monitoring:
     stackdriverProjectId: ""
     prometheusPort: 9090
 
+
+# for example
+# extraEnvs:
+#  - name: MY_PLUGIN_IS_A_SINGULARITY_THAT_WILL_TAKE_OVER_THE_WORLD
+#    value: 666
+#
+extraEnvs: []
+
 console:
   port: 7351
   grpc: 7348

@@ -46,6 +46,10 @@ spec:
           /nakama/nakama migrate up --database.address root@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }} &&
            exec /nakama/nakama --database.address root@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }} --config /nk-config/nakama-config.yml
         image: {{ required "You have to give your custom Nakama container image" .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}
+        {{- with .Values.extraEnvs }}
+        env:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
           - name: config-volume
