@@ -45,6 +45,7 @@ helm install nk louis030195/nakama -f my-values.yaml -n mynamespace
 
 ## Additional Features
 
+- Open console on The Internet `--set console.nodePort=30025`
 - Metrics scrapping using [Kubernetes Prometheus Operator](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
   * Install Prometheus Operator for example on "observability" namespace. 
 	

@@ -19,6 +19,9 @@ spec:
   - name: console
     port: {{ .Values.console.port }}
     targetPort: {{ .Values.console.port }}
+    {{- with .Values.console.nodePort }}
+    nodePort: {{ . }}
+    {{- end }}
   - name: console-grpc
     port: {{ .Values.console.grpc }}
     targetPort: {{ .Values.console.grpc }}
