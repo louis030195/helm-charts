@@ -71,3 +71,9 @@ helm install nk louis030195/nakama -f my-values.yaml -n mynamespace
 - [ ] Nakama enterprise support 
 - [ ] Cockroachdb / postgresql dependency
 - [ ] Provide a JSON Grafana dashboards for Nakama
+
+
+## Troubleshooting
+
+- Using Minikube and trying to reach your node in a local network?  
+  `ssh -i ~/.minikube/machines/minikube/id_rsa docker@$(minikube ip) -L \*:$MY_NODE_PORT:0.0.0.0:$MY_NODE_PORT`

@@ -72,3 +72,5 @@ database:
 # Want to use k8s api ?
 clusterRole:
   enabled: false
+
+extraConfigMaps:

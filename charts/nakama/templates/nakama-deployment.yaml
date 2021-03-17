@@ -52,18 +52,20 @@ spec:
         {{- end }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
+          {{- with .Values.extraConfigMaps }}
+          - name: config-volume-extra
+            mountPath: /nk-config/nakama-extra-config.yml
+            subPath: nakama-extra-config.yml
+          {{- end }}
           - name: config-volume
             mountPath: /nk-config/nakama-config.yml
             subPath: nakama-config.yml
         livenessProbe:
-          exec:
-            command:
-            - curl
-            - -f
-            - http://{{ include "nakama.fullname" . }}:{{ .Values.socket.port }}
-          failureThreshold: 5
-          periodSeconds: 10
-          timeoutSeconds: 5
+          httpGet:
+            path: .
+            port: {{ .Values.socket.port }}
+            scheme: HTTP
+          initialDelaySeconds: 30
         ports:
         - containerPort: {{ .Values.grpc.port }}
         - containerPort: {{ .Values.socket.port }}
@@ -73,9 +75,15 @@ spec:
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       volumes:
+        {{- with .Values.extraConfigMaps }}
+        - name: config-volume-extra
+          configMap:
+            name: {{ include "nakama.fullname" $ }}-extra-cm
+        {{- end }}
         - name: config-volume
           configMap:
             name: {{ include "nakama.fullname" . }}
+
       restartPolicy: Always
       {{- with .Values.nodeSelector }}
       nodeSelector:

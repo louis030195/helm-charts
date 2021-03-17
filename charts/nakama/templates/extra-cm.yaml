@@ -1,0 +1,11 @@
+{{- with .Values.extraConfigMaps }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nakama.fullname" $ }}-extra-cm
+  labels:
+    {{- include "nakama.labels" $ | nindent 4 }}
+data:
+  nakama-extra-config.yml: |
+    {{- toYaml $.Values.extraConfigMaps | nindent 4 }}
+{{- end }}
