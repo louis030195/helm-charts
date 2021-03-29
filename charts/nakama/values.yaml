@@ -61,13 +61,23 @@ image:
   pullPolicy: IfNotPresent
 
 database:
-  port: 26257
   size: 1000Mi
+  type: cockroachdb
+  port: 26257
+
+cockroachdb:
   image:
-    # Only support cockroachdb for now
     repository: cockroachdb/cockroach
     tag: v20.2.4
     pullPolicy: IfNotPresent
+
+# Using postgres?
+# postgres:
+#  image:
+#    repository: postgres
+#    tag: v12.2-alpine
+#    pullPolicy: IfNotPresent
+
 
 # Want to use k8s api ?
 clusterRole:

@@ -43,8 +43,15 @@ spec:
         - /bin/sh
         - -ecx
         - |
+          {{ if eq .Values.database.type "cockroachdb" }}
           /nakama/nakama migrate up --database.address root@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }} &&
-           exec /nakama/nakama --database.address root@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }} --config /nk-config/nakama-config.yml
+          exec /nakama/nakama --database.address root@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }} --config /nk-config/nakama-config.yml
+          {{ else if eq .Values.database.type "postgres" }}
+          /nakama/nakama migrate up --database.address postgres:localdb@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }}/nakama &&
+          exec /nakama/nakama --database.address postgres:localdb@{{ include "nakama.fullname" . }}-database:{{ .Values.database.port }}/nakama --config /nk-config/nakama-config.yml
+          {{ else }}
+          {{- fail "value for .Values.database.type should either be 'cockroachdb' or 'postgres'" }}
+          {{ end }}
         image: {{ required "You have to give your custom Nakama container image" .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}
         {{- with .Values.extraEnvs }}
         env:

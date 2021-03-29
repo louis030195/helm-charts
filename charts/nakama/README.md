@@ -3,6 +3,8 @@
 
 [Nakama](https://github.com/heroiclabs/nakama) [Helm](https://helm.sh/) chart.
 
+**This is a non-official Helm chart, it may be insecure and unfit for professional use, rather use [Heroic Cloud](https://heroiclabs.com/heroic-cloud/)**
+
 **Beware of the naming between values (k8s convention lower camel case) and Nakama config (snake case)**
 
 ## Usage
@@ -67,10 +69,11 @@ helm install nk louis030195/nakama -f my-values.yaml -n mynamespace
 - [ ] Log forwarding <https://github.com/timberio/vector>
 - [ ] Additional initContainer, container
 - [ ] Node affinity
-- [ ] postgresql support
+- [x] postgresql support
 - [ ] Nakama enterprise support 
 - [ ] Cockroachdb / postgresql dependency
 - [ ] Provide a JSON Grafana dashboards for Nakama
+- [ ] Better operational procedures
 
 
 ## Troubleshooting

@@ -1,4 +1,4 @@
-{{- if eq .Values.database.type "cockroachdb" }}
+{{- if eq .Values.database.type "postgres" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,19 +21,25 @@ spec:
         {{- include "nakama.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - args:
-        - start-single-node
-        - --insecure
-        - --store=attrs=ssd,path=/var/lib/cockroach/
-        image: {{ .Values.cockroachdb.image.repository }}:{{ .Values.cockroachdb.image.tag }}
-        imagePullPolicy: {{ .Values.cockroachdb.image.pullPolicy }}
+      - command:
+        - /bin/sh
+        - -ecx
+        - |
+          docker-entrypoint.sh -c 'shared_preload_libraries=pg_stat_statements' -c 'pg_stat_statements.track=all'
+        image: {{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}
+        imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
         name: db
+        env:
+          - name: POSTGRES_DB
+            value: nakama
+          - name: POSTGRES_PASSWORD
+            value: localdb
         ports:
         - containerPort: {{ .Values.database.port }}
         - containerPort: 8080
         resources: {}
         volumeMounts:
-        - mountPath: /var/lib/cockroach
+        - mountPath: /var/lib/postgresql/data
           name: data
       restartPolicy: Always
       volumes:
